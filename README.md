@@ -40,5 +40,6 @@ Pretell, R. (2026). gmms: Ground motion models and supporting tools (v0.2.0). Ze
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18446120.svg)](https://doi.org/10.5281/zenodo.18446120)
 
+
 ## Contact
 For any questions or comments, contact Renmin Pretell (rpretell at unr dot edu).
