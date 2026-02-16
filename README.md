@@ -15,9 +15,12 @@ The GMMs available are listed below, and the tools include codes for computing t
 
 ## Example
 Three examples on Jupyter Notebooks are presented:
-- [Example 1](https://github.com/RPretellD/gmms/blob/main/Examples/Example1.ipynb): Use of Campbell and Bozorgnia models for the 1989 Loma Prieta Earthquake (single-segment fault). 
-- [Example 2](https://github.com/RPretellD/gmms/blob/main/Examples/Example2.ipynb): Use of Campbell and Bozorgnia models for the 2023 Pazarcik Earthquake (multi-segment fault). 
-- [Example 3](https://github.com/RPretellD/gmms/blob/main/Examples/Example3.ipynb): Use of the Foulser-Piggott and Goda models for the 2003 Tokachi Earthquake. 
+- [Example 1 (Python version)](https://github.com/RPretellD/gmms/blob/main/examples/Example1_Python.ipynb): Use of Campbell and Bozorgnia models for the 1989 Loma Prieta Earthquake (single-segment fault). 
+- [Example 1 (Cython version)](https://github.com/RPretellD/gmms/blob/main/examples/Example1_Cython.ipynb): Use of Campbell and Bozorgnia models for the 1989 Loma Prieta Earthquake (single-segment fault). 
+- [Example 2 (Python version)](https://github.com/RPretellD/gmms/blob/main/examples/Example2_Python.ipynb): Use of Campbell and Bozorgnia models for the 2023 Pazarcik Earthquake (multi-segment fault). 
+- [Example 2 (Cython version)](https://github.com/RPretellD/gmms/blob/main/examples/Example2_Cython.ipynb): Use of Campbell and Bozorgnia models for the 2023 Pazarcik Earthquake (multi-segment fault). 
+- [Example 3 (Python version)](https://github.com/RPretellD/gmms/blob/main/examples/Example3_Python.ipynb): Use of the Foulser-Piggott and Goda models for the 2003 Tokachi Earthquake. 
+- [Example 3 (Cython version)](https://github.com/RPretellD/gmms/blob/main/examples/Example3_Cython.ipynb): Use of the Foulser-Piggott and Goda models for the 2003 Tokachi Earthquake. 
 
 
 ## Acknowledgements
@@ -33,9 +36,9 @@ Three examples on Jupyter Notebooks are presented:
 
 ## Citation
 If you use these codes, please cite:<br>
-Pretell, R. (2026). gmms: Ground motion models and supporting tools (0.2.0). Zenodo. http://doi.org/10.5281/zenodo.10127854<br>
+Pretell, R. (2026). gmms: Ground motion models and supporting tools (v0.2.0). Zenodo. https://doi.org/10.5281/zenodo.18446120<br>
 
-[![DOI](https://zenodo.org/badge/716445161.svg)](https://zenodo.org/doi/10.5281/zenodo.10127854)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18446120.svg)](https://doi.org/10.5281/zenodo.18446120)
 
 ## Contact
 For any questions or comments, contact Renmin Pretell (rpretell at unr dot edu).
