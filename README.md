@@ -36,9 +36,9 @@ Three examples on Jupyter Notebooks are presented:
 
 ## Citation
 If you use these codes, please cite:<br>
-Pretell, R. (2026). gmms: Ground motion models and supporting tools (v0.2.0). Zenodo. https://doi.org/10.5281/zenodo.18446120<br>
+Pretell, R. (2026). gmms: Ground motion models and supporting tools (v0.2.0). Zenodo. http://doi.org/10.5281/zenodo.10127854<br>
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18446120.svg)](https://doi.org/10.5281/zenodo.18446120)
+[![DOI](https://zenodo.org/badge/716445161.svg)](https://zenodo.org/doi/10.5281/zenodo.10127854)
 
 
 ## Contact
