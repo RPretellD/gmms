@@ -14,5 +14,5 @@
 
 ### V1.0.0
 - Included implementations for Ry0 distance. 
-- Remove unnecessary variables and variable declarations from some functions. 
+- Removed unnecessary variables and variable declarations from some functions. 
 - Other minor edits. 
