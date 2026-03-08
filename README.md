@@ -24,21 +24,23 @@ Three examples on Jupyter Notebooks are presented:
 
 
 ## Acknowledgements
-- The codes for the estimation of Joyner-Boore and rupture distances are based on Pengfei Wang's [R implementations](https://github.com/wltcwpf/RPSHA/blob/main/R/distance_calc.R).
+The codes for the estimation of Joyner-Boore and rupture distances are based on Pengfei Wang's [R implementations](https://github.com/wltcwpf/RPSHA/blob/main/R/distance_calc.R).
 
 
 ## References
-- Campbell, K.W., and Bozorgnia, Y. (2010). "A ground motion prediction equation for the horizontal component of cumulative absolute velocity (CAV) based on the PEER-NGA strong motion database." Earthquake Spectra 26(3): 635–650. 
-- Campbell, K.W., and Bozorgnia, Y. (2011). "Prediction equations for the standardized version of cumulative absolute velocity as adapted for use in the shutdown of U.S. nuclear power plants." Nuclear Engineering and Design 241(2011): 2558–2569. 
-- Campbell, K.W., and Bozorgnia, Y. (2019). "Ground motion models for the horizontal components of Arias intensity (AI) and cumulative absolute velocity (CAV) using the NGA-West2 Database." Earthquake Spectra 35(3): 1289–1310. 
-- Foulser‐Piggott, R., and Goda, K. (2015). "Ground‐motion prediction models for Arias intensity and cumulative absolute velocity for Japanese earthquakes considering single‐station sigma and within‐event spatial correlation." Bulletin of the Seismological Society of America 105(4): 1903–1918. 
+> Campbell, K.W., and Bozorgnia, Y. (2010). "A ground motion prediction equation for the horizontal component of cumulative absolute velocity (CAV) based on the PEER-NGA strong motion database." Earthquake Spectra 26(3): 635–650. 
+
+> Campbell, K.W., and Bozorgnia, Y. (2011). "Prediction equations for the standardized version of cumulative absolute velocity as adapted for use in the shutdown of U.S. nuclear power plants." Nuclear Engineering and Design 241(2011): 2558–2569. 
+
+> Campbell, K.W., and Bozorgnia, Y. (2019). "Ground motion models for the horizontal components of Arias intensity (AI) and cumulative absolute velocity (CAV) using the NGA-West2 Database." Earthquake Spectra 35(3): 1289–1310. 
+
+> Foulser‐Piggott, R., and Goda, K. (2015). "Ground‐motion prediction models for Arias intensity and cumulative absolute velocity for Japanese earthquakes considering single‐station sigma and within‐event spatial correlation." Bulletin of the Seismological Society of America 105(4): 1903–1918. 
 
 
 ## Citation
-If you use these codes, please cite:<br>
-Pretell, R. (2026). gmms: Ground motion models and supporting tools (v0.2.0). Zenodo. http://doi.org/10.5281/zenodo.10127854<br>
+> Pretell, R. (2026). gmms: Ground motion models and supporting tools (v1.0.0). Zenodo. http://doi.org/10.5281/zenodo.10127854<br>
 
-[![DOI](https://zenodo.org/badge/716445161.svg)](https://zenodo.org/doi/10.5281/zenodo.10127854)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10127854.svg)](https://doi.org/10.5281/zenodo.10127854)
 
 
 ## Contact

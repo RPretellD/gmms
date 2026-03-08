@@ -9,7 +9,7 @@ __author__         = 'A. Renmin Pretell Ductram'
 #===================================================================================================
 # CAVdp: mu
 #===================================================================================================
-def get_mu(PSVcheck, M, fdip, fZtor, R_JB, R_rup, R_x, Vs30, Z1p0, Z2p5, fnm, frv):
+def get_mu(PSVcheck, M, fdip, fZtor, R_JB, R_rup, R_x, Vs30, Z2p5, fnm, frv):
     
     if PSVcheck == 1:
         c_0 =  0.0072
@@ -122,7 +122,7 @@ def CampbellBozorgnia2011(M, fdip, fZtor, R_JB, R_rup, R_x, Vs30, Z1p0, Z2p5, fn
     A_1100 = CampbellBozorgnia2010.get_mu(0, M, fdip, fZtor, R_JB_arr, R_rup_arr, R_x_arr, A_1100_R, Z2p5_arr, fnm, frv)
     A_1100 = np.exp(A_1100)
     
-    mu_im  = get_mu(PSVcheck, M, fdip, fZtor, R_JB_arr, R_rup_arr, R_x_arr, Vs30_arr, Z1p0_arr, Z2p5_arr, fnm, frv)
+    mu_im  = get_mu(PSVcheck, M, fdip, fZtor, R_JB_arr, R_rup_arr, R_x_arr, Vs30_arr, Z2p5_arr, fnm, frv)
     phi_im = get_phi(CAVgmType, PSVcheck, Vs30_arr, A_1100)
     tau_im = get_tau(CAVgmType, PSVcheck)
 

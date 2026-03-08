@@ -11,3 +11,8 @@
 - Functions that were previously available in Cython only are now also available in Python. 
 - Most functions are loaded by default using the Python implementation, but can also be used in Cython when desired. 
 - Other code changes to accomodate the above updates. 
+
+### V1.0.0
+- Included implementations for Ry0 distance. 
+- Remove unnecessary variables and variable declarations from some functions. 
+- Other minor edits. 

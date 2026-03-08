@@ -70,7 +70,7 @@ class OptionalBuildExt(build_ext):
 # Call setup
 setup(
     name="gmms",
-    version="0.2.0",
+    version="1.0.0",
     
     description="Ground motion models and supporting tools.",
     author="A. Renmin Pretell Ductram",

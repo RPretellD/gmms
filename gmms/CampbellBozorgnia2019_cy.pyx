@@ -118,10 +118,8 @@ cdef get_tau(int IM,double M,double Vs30,double A_1100):
 @cython.wraparound(False)
 @cython.nonecheck(False)
 @cython.cdivision(True)
-def CampbellBozorgnia2019(int IM,double M,double fwidth,double fdip,double Z_tor, double Z_hyp,
-                             double[:] R_JB,double[:] R_rup,double[:] R_x,double[:] Vs30,double[:] Z2p5,
-                             int fnm,int frv,region):
-	
+def CampbellBozorgnia2019(int IM,double M,double fwidth,double fdip,double Z_tor, double Z_hyp, R_JB, R_rup, R_x, Vs30, Z2p5, int fnm,int frv,region):
+
     """
     Parameter
     =========

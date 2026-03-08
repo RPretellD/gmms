@@ -21,6 +21,7 @@ def argmin(double[:] array_A):
 	cdef Py_ssize_t N = len(array_A)
 	cdef double min_val   = array_A[0]
 	cdef Py_ssize_t min_index = 0
+	cdef Py_ssize_t i
 
 	for i in range(N):
 		if array_A[i] < min_val:
@@ -75,10 +76,10 @@ cdef vincenty(double lat1, double lon1, double lat2, double lon2):
 	if (lat1-lat2) == 0 and (lon1-lon2) == 0:
 		return 0.0
 
-	lat1 = lat1*pi/180
-	lat2 = lat2*pi/180
-	lon1 = lon1*pi/180
-	lon2 = lon2*pi/180
+	lat1 = lat1*pi/180.
+	lat2 = lat2*pi/180.
+	lon1 = lon1*pi/180.
+	lon2 = lon2*pi/180.
 
 	cdef double U1     = atan((1-f)*tan(lat1))
 	cdef double U2     = atan((1-f)*tan(lat2))
@@ -131,7 +132,7 @@ cdef vincenty(double lat1, double lon1, double lat2, double lon2):
 @cython.nonecheck(False)
 @cython.cdivision(True)
 def get_bearing(double lat1, double lon1, double lat2, double lon2):
-	cdef conv = pi/180
+	cdef conv = pi/180.
 	lat1 = lat1*conv
 	lon1 = lon1*conv
 	lat2 = lat2*conv
@@ -160,7 +161,7 @@ cdef cll2xy(double flon, double flat, double[:] slon, double[:] slat):
 		X[i] = distance*sin(bearing)
 		Y[i] = distance*cos(bearing)
 		i += 1
-	return X,Y
+	return X, Y
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -291,7 +292,23 @@ cdef d2t(P):
 	P_clst.append(E_clst[1,iclst])
 	P_clst.append(E_clst[2,iclst])
 
-	return dclst,P_clst
+	return dclst, P_clst
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.nonecheck(False)
+@cython.cdivision(True)
+def get_azimuth(double slat, double slon, double flat, double flon):
+
+	cdef double conv = pi/180.
+
+	cdef double slat_rad = slat*conv
+	cdef double slon_rad = slon*conv
+	cdef double flat_rad = flat*conv
+	cdef double flon_rad = flon*conv
+
+	cdef double az = atan2(sin(flon_rad-slon_rad)*cos(flat_rad),cos(slat_rad)*sin(flat_rad)-sin(slat_rad)*cos(flat_rad)*cos(flon_rad-slon_rad))
+	return az*180./pi
 
 #===================================================================================================
 # Joyner-Boore distance
@@ -302,8 +319,8 @@ cdef d2t(P):
 @cython.cdivision(True)
 def get_Rjb(	double[:] slat, double[:] slon,
 				double flat1, double flon1, double flat2, double flon2,
-				double fwidth, double fdip, double fZtor):
-		
+				double fwidth, double fdip):
+
 	"""
 	Parameter
 	=========
@@ -312,7 +329,6 @@ def get_Rjb(	double[:] slat, double[:] slon,
 	flat2/flon2: Fault URC coordinates (deg).
 	fwidth: Fault width (km).
 	fdip: Fault dip (deg).
-	fZtor: Depth to top of fault rupture (km).
 	
 	Returns
 	=======
@@ -320,11 +336,10 @@ def get_Rjb(	double[:] slat, double[:] slon,
 	"""
 
 	cdef Py_ssize_t N_sites = len(slat)
-	cdef double conv    = pi/180
+	cdef double conv    = pi/180.
 	cdef double[:] Rrup = np.zeros(N_sites, dtype = 'float64')
 	cdef double[:] Rjb  = np.zeros(N_sites, dtype = 'float64')
 	cdef double[:,:] pt = np.zeros([3,4], dtype = 'float64')
-	cdef double botd    = fZtor + fwidth*sin(fdip*conv)
 	cdef double rwh     = fwidth*cos(fdip*conv)
 	cdef double fstrike, tmp_fstrike, dX, dY
 	cdef Py_ssize_t i_sta
@@ -370,7 +385,7 @@ def get_Rjb(	double[:] slat, double[:] slon,
 		a = d2t(pt)
 		Rjb[i_sta] = a[0]
 
-	return np.asarray(Rjb)
+	return Rjb
 
 #===================================================================================================
 # Rupture distance
@@ -399,7 +414,7 @@ def get_Rrup(	double[:] slat, double[:] slon,
 	"""
 
 	cdef Py_ssize_t N_sites = len(slat)
-	cdef double conv    = pi/180
+	cdef double conv    = pi/180.
 	cdef double[:] Rrup = np.zeros(N_sites, dtype = 'float64')
 	cdef double[:] Rjb  = np.zeros(N_sites, dtype = 'float64')
 	cdef double[:,:] pt = np.zeros([3,4], dtype = 'float64')
@@ -448,7 +463,7 @@ def get_Rrup(	double[:] slat, double[:] slon,
 		a = d2t(pt)
 		Rrup[i_sta] = a[0]
 
-	return np.asarray(Rrup)
+	return Rrup
 
 #===================================================================================================
 # Rx
@@ -457,7 +472,7 @@ def get_Rrup(	double[:] slat, double[:] slon,
 @cython.wraparound(False)
 @cython.nonecheck(False)
 @cython.cdivision(True)
-def get_Rx(	double[:] slat, double[:] slon, double flat1, double flon1, double flat2, double flon2):
+def get_Rx(slat, slon, double flat1, double flon1, double flat2, double flon2):
 
 	"""
 	Parameter
@@ -470,20 +485,114 @@ def get_Rx(	double[:] slat, double[:] slon, double flat1, double flon1, double f
 	=======
 	Rx distance (km).
 	"""
-	
-	cdef Py_ssize_t N_sites = len(slon)
+	cdef np.ndarray[np.double_t, ndim=1] slat_arr = np.ascontiguousarray(np.atleast_1d(slat), dtype=np.float64)
+	cdef np.ndarray[np.double_t, ndim=1] slon_arr = np.ascontiguousarray(np.atleast_1d(slon), dtype=np.float64)
+
+	cdef Py_ssize_t N_sites = len(slat_arr)
 	cdef double[:] Rx = np.zeros(N_sites, dtype='float64')
 	cdef Py_ssize_t i
 	
+	frame = nv.FrameE(a=6371008.8, f=0)
+	pointA1 = frame.GeoPoint(flat1,flon1,degrees=True)
+	pointA2 = frame.GeoPoint(flat2,flon2,degrees=True)
+	pathA   = nv.GeoPath(pointA1, pointA2)
+
 	for i in range(N_sites):
-		frame   = nv.FrameE(a=6371008.8, f=0)
-		pointA1 = frame.GeoPoint(flat1,flon1,degrees=True)
-		pointA2 = frame.GeoPoint(flat2,flon2,degrees=True)
-		pointB  = frame.GeoPoint(slat[i],slon[i],degrees=True)
-		pathA   = nv.GeoPath(pointA1, pointA2)
+		pointB  = frame.GeoPoint(slat_arr[i],slon_arr[i],degrees=True)
 		Rx[i]   = pathA.cross_track_distance(pointB, method='greatcircle')/1000
+
+	return Rx
+
+#===================================================================================================
+# Ry0
+#===================================================================================================
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.nonecheck(False)
+@cython.cdivision(True)
+def get_Ry0_ind(double slat, double slon, double flat1, double flon1, double flat2, double flon2, double fstrike, int n_parts=150, Rx=None):
+
+	"""
+	Parameter
+	=========
+	slat/slon: Site coordinates (deg).
+	flat1/flon1: Fault ULC coordinates (deg).
+	flat2/flon2: Fault URC coordinates (deg).
+	fstrike: Fault strike (deg).
+	n_parts: Number of parts to discretize the fault.
+	Rx: Rx distance (km).
 	
-	return np.asarray(Rx)
+	Returns
+	=======
+	Rx distance (km).
+	"""
+
+	# RP: This function needs optimization. 
+
+	cdef double lat, lon
+	cdef double clst_flat, clst_flon
+	cdef double az, theta, Ry0, Rx_val
+	cdef Py_ssize_t arg_min
+
+	cdef double dlat = (flat2-flat1)/n_parts
+	cdef double dlon = (flon2-flon1)/n_parts
+
+	cdef object segs      = np.arange(n_parts+1)
+	cdef object flat_segs = flat1+segs*dlat
+	cdef object flon_segs = flon1+segs*dlon
+
+	cdef list distances = []
+	for lat,lon in zip(flat_segs,flon_segs):
+		distances.append(vincenty(slat,slon,lat,lon))
+	distances_arr = np.array(distances)
+
+	arg_min   = argmin(distances_arr)
+	clst_flat = flat_segs[arg_min]
+	clst_flon = flon_segs[arg_min]
+
+	az = get_azimuth(slat,slon,clst_flat,clst_flon)
+
+	if arg_min == 0:
+		theta = -(180-az+fstrike)
+	elif arg_min == n_parts:
+		theta = az-fstrike+180
+	else:
+		if az > 0:
+			theta = 90
+		elif az < 0:
+			theta = -90
+		else:
+			theta = 0
+
+	theta = theta%360
+
+	if Rx is None:
+		Rx_val = get_Rx(slat,slon,flat1,flon1,flat2,flon2)[0]
+	else:
+		Rx_val = Rx
+
+	Ry0 = max(0.,abs(Rx_val)/abs(tan(theta*pi/180.)))
+
+	if Ry0 < 0.01:
+		return 0., theta
+	else:
+		return Ry0, theta
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.nonecheck(False)
+@cython.cdivision(True)
+def get_Ry0(double[:] slat, double[:] slon, double[:] Rx, double flat1, double flon1, double flat2, double flon2, double fstrike, int n_parts=150):
+
+	cdef Py_ssize_t N_sites = len(slon)
+	cdef double[:] Ry0      = np.zeros(N_sites, dtype='float64')
+	cdef double[:] theta    = np.zeros(N_sites, dtype='float64')
+	cdef Py_ssize_t i
+
+	for i in range(N_sites):
+		Ry0[i], theta[i] = get_Ry0_ind(slat[i], slon[i], flat1, flon1, flat2, flon2, fstrike, n_parts=n_parts, Rx=Rx[i])
+
+	return Ry0, theta
 
 #===================================================================================================
 # Get all distances (convenient to handle multi-segment fault)
@@ -492,8 +601,8 @@ def get_Rx(	double[:] slat, double[:] slon, double flat1, double flon1, double f
 @cython.wraparound(False)
 @cython.nonecheck(False)
 @cython.cdivision(True)
-def get_distances(site_lat, site_lon, ULC_lat, ULC_lon, URC_lat, URC_lon, segm_width, segm_length, segm_dip, segm_strike, segm_Ztor):
-	
+def get_distances(site_lat, site_lon, ULC_lat, ULC_lon, URC_lat, URC_lon, segm_width, segm_dip, segm_strike, segm_Ztor):
+
 	"""
 	Parameter
 	=========
@@ -518,45 +627,45 @@ def get_distances(site_lat, site_lon, ULC_lat, ULC_lon, URC_lat, URC_lon, segm_w
 	cdef np.ndarray[np.double_t, ndim=1] URC_lat_arr     = np.ascontiguousarray(np.atleast_1d(URC_lat), dtype=np.float64)
 	cdef np.ndarray[np.double_t, ndim=1] URC_lon_arr     = np.ascontiguousarray(np.atleast_1d(URC_lon), dtype=np.float64)
 	cdef np.ndarray[np.double_t, ndim=1] segm_width_arr  = np.ascontiguousarray(np.atleast_1d(segm_width), dtype=np.float64)
-	cdef np.ndarray[np.double_t, ndim=1] segm_length_arr = np.ascontiguousarray(np.atleast_1d(segm_length), dtype=np.float64)
 	cdef np.ndarray[np.double_t, ndim=1] segm_dip_arr    = np.ascontiguousarray(np.atleast_1d(segm_dip), dtype=np.float64)
 	cdef np.ndarray[np.double_t, ndim=1] segm_strike_arr = np.ascontiguousarray(np.atleast_1d(segm_strike), dtype=np.float64)
 	cdef np.ndarray[np.double_t, ndim=1] segm_Ztor_arr   = np.ascontiguousarray(np.atleast_1d(segm_Ztor), dtype=np.float64)
 
-	cdef double[:] site_lat_arr2    = site_lat_arr
-	cdef double[:] site_lon_arr2    = site_lon_arr
-	cdef double[:] ULC_lat_arr2     = ULC_lat_arr
-	cdef double[:] ULC_lon_arr2     = ULC_lon_arr
-	cdef double[:] URC_lat_arr2     = URC_lat_arr
-	cdef double[:] URC_lon_arr2     = URC_lon_arr
-	cdef double[:] segm_width_arr2  = segm_width_arr
-	cdef double[:] segm_length_arr2 = segm_length_arr
-	cdef double[:] segm_dip_arr2    = segm_dip_arr
-	cdef double[:] segm_strike_arr2 = segm_strike_arr
-	cdef double[:] segm_Ztor_arr2   = segm_Ztor_arr
+	cdef Py_ssize_t N_segms = len(segm_dip_arr)
+	cdef Py_ssize_t N_sites = len(site_lat_arr)
 
-	cdef Py_ssize_t N_segms = len(segm_dip_arr2)
-	cdef Py_ssize_t N_sites = len(site_lat)
-	cdef double[:,:] tmp_Rjb  = np.zeros((N_sites,N_segms), dtype='float64')
-	cdef double[:,:] tmp_Rrup = np.zeros((N_sites,N_segms), dtype='float64')
-	cdef double[:,:] tmp_Rx   = np.zeros((N_sites,N_segms), dtype='float64')
-	cdef double[:] ALL_Rjb    = np.zeros(N_sites, dtype='float64')
-	cdef double[:] ALL_Rrup   = np.zeros(N_sites, dtype='float64')
-	cdef double[:] ALL_Rx     = np.zeros(N_sites, dtype='float64')
+	cdef double[:,:] tmp_Rjb   = np.zeros((N_sites,N_segms), dtype='float64')
+	cdef double[:,:] tmp_Rrup  = np.zeros((N_sites,N_segms), dtype='float64')
+	cdef double[:,:] tmp_Rx    = np.zeros((N_sites,N_segms), dtype='float64')
+	cdef double[:,:] tmp_Ry0   = np.zeros((N_sites,N_segms), dtype='float64')
+	cdef double[:,:] tmp_theta = np.zeros((N_sites,N_segms), dtype='float64')
+
+	cdef double[:] ALL_Rjb  = np.zeros(N_sites, dtype='float64')
+	cdef double[:] ALL_Rrup = np.zeros(N_sites, dtype='float64')
+	cdef double[:] ALL_Rx   = np.zeros(N_sites, dtype='float64')
+	cdef double[:] ALL_Ry0  = np.zeros(N_sites, dtype='float64')
+
 	cdef double[:] slat, slon
-	cdef Py_ssize_t i, j
+	cdef Py_ssize_t i, j, arg_min_Rjb
 
 	for i in range(N_segms):
 		for j in range(N_sites):
-			slat = np.array([site_lat[j]])
-			slon = np.array([site_lon[j]])
-			tmp_Rjb[j][i]  = get_Rjb(slat,slon,ULC_lat[i],ULC_lon[i],URC_lat[i],URC_lon[i],segm_width[i],segm_dip[i],segm_strike[i])[0]
-			tmp_Rrup[j][i] = get_Rrup(slat,slon,ULC_lat[i],ULC_lon[i],URC_lat[i],URC_lon[i],segm_width[i],segm_dip[i],segm_Ztor[i])[0]
-			tmp_Rx[j][i]   = get_Rx(slat,slon,ULC_lat[i],ULC_lon[i],URC_lat[i],URC_lon[i])[0]
+			slat = np.array([site_lat_arr[j]])
+			slon = np.array([site_lon_arr[j]])
+			tmp_Rjb[j][i]  = get_Rjb(slat,slon,ULC_lat_arr[i],ULC_lon_arr[i],URC_lat_arr[i],URC_lon_arr[i],segm_width_arr[i],segm_dip_arr[i])[0]
+			tmp_Rrup[j][i] = get_Rrup(slat,slon,ULC_lat_arr[i],ULC_lon_arr[i],URC_lat_arr[i],URC_lon_arr[i],segm_width_arr[i],segm_dip_arr[i],segm_Ztor_arr[i])[0]
+			tmp_Rx[j][i]   = get_Rx(slat,slon,ULC_lat_arr[i],ULC_lon_arr[i],URC_lat_arr[i],URC_lon_arr[i])[0]
+			tmp_Ry0[j][i], tmp_theta[j][i] = get_Ry0_ind(site_lat_arr[j],site_lon_arr[j],ULC_lat_arr[i],ULC_lon_arr[i],URC_lat_arr[i],URC_lon_arr[i],segm_strike_arr[i],n_parts=150,Rx=tmp_Rx[j][i])
 
 	for j in range(N_sites):
-		ALL_Rjb[j]  = min(tmp_Rjb[j][:])
-		ALL_Rrup[j] = min(tmp_Rrup[j][:])
-		ALL_Rx[j]   = tmp_Rx[j][argmin(tmp_Rjb[j][:])]
+		ALL_Rjb[j]  = min(tmp_Rjb[j,:])
+		ALL_Rrup[j] = min(tmp_Rrup[j,:])
+		arg_min_Rjb = argmin(tmp_Rjb[j,:])
+		ALL_Rx[j]   = tmp_Rx[j,arg_min_Rjb]
 
-	return np.asarray(ALL_Rjb),np.asarray(ALL_Rrup),np.asarray(ALL_Rx)
+		if 90.0 in np.abs(tmp_theta[j,:]):
+			ALL_Ry0[j] = tmp_Ry0[j, np.where(np.abs(tmp_theta[j,:]) == 90.0)[0][0]]
+		else:
+			ALL_Ry0[j] = tmp_Ry0[j,arg_min_Rjb]
+
+	return ALL_Rjb, ALL_Rrup, ALL_Rx, ALL_Ry0

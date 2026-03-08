@@ -20,7 +20,7 @@ __author__ = 'A. Renmin Pretell Ductram'
 @cython.wraparound(False)
 @cython.nonecheck(False)
 @cython.cdivision(True)
-cdef get_mu(int PSVcheck,double M,double fdip,double fZtor,double R_JB,double R_rup,double R_x,double Vs30,double Z1p0,double Z2p5,int fnm,int frv):
+cdef get_mu(int PSVcheck,double M,double fdip,double fZtor,double R_JB,double R_rup,double R_x,double Vs30,double Z2p5,int fnm,int frv):
     
     cdef double lnCAVgm, mu
     cdef double c_0, c_1, c_2, c_3
@@ -169,7 +169,7 @@ def CampbellBozorgnia2011(double M,double fdip,double fZtor, R_JB, R_rup, R_x, V
         A_1100[i] = exp(A_1100[i])
         alpha[i]  = CampbellBozorgnia2010.get_alpha(Vs30_arr2[i],A_1100[i])
         
-        mu_im[i]  = get_mu(PSVcheck,M,fdip,fZtor,R_JB_arr2[i],R_rup_arr2[i],R_x_arr2[i],Vs30_arr2[i],Z1p0_arr2[i],Z2p5_arr2[i],fnm,frv)
+        mu_im[i]  = get_mu(PSVcheck,M,fdip,fZtor,R_JB_arr2[i],R_rup_arr2[i],R_x_arr2[i],Vs30_arr2[i],Z2p5_arr2[i],fnm,frv)
         phi_im[i] = get_phi(CAVgmType,PSVcheck,alpha[i])
         tau_im[i] = get_tau(CAVgmType,PSVcheck)
 
