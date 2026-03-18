@@ -1,3 +1,29 @@
+Metadata-Version: 2.4
+Name: gmms
+Version: 1.0.1
+Summary: Ground motion models and supporting tools.
+Home-page: https://github.com/RPretellD/gmms
+Author: A. Renmin Pretell Ductram
+Author-email: rpretell@unr.edu
+License-Expression: MIT
+Keywords: gmms
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Cython
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: Cython
+Requires-Dist: geopy
+Requires-Dist: shapely
+Requires-Dist: nvector
+Requires-Dist: vincenty
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
 # gmms: Ground Motion Models (GMMs) and supporting tools
 
 This repository provides a ground motion models (GMMs) and supporting tools coded in Python and Cython. By default, the Python version of the library is loaded, but the Cython can be selected when desired (see Examples). 

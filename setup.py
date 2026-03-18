@@ -70,11 +70,11 @@ class OptionalBuildExt(build_ext):
 # Call setup
 setup(
     name="gmms",
-    version="1.0.0",
+    version="1.0.1",
     
     description="Ground motion models and supporting tools.",
     author="A. Renmin Pretell Ductram",
-    author_email='rpretell@unr.edu',
+    author_email="rpretell@unr.edu",
     url="https://github.com/RPretellD/gmms",
     
     long_description_content_type="text/markdown",
@@ -85,5 +85,5 @@ setup(
     include_package_data=True,
     ext_modules=cythonize(extensions),
     cmdclass={"build_ext": OptionalBuildExt},
-    python_requires	= ">=3.7",
+    python_requires	= ">=3.9",
 )

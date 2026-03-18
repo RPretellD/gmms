@@ -6,7 +6,7 @@ import math
 import nvector as nv
 from vincenty import vincenty
 
-__author__         = 'A. Renmin Pretell Ductram'
+__author__ = 'A. Renmin Pretell Ductram'
 
 #===================================================================================================
 # Supporting functions

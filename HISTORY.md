@@ -16,3 +16,6 @@
 - Included implementations for Ry0 distance. 
 - Removed unnecessary variables and variable declarations from some functions. 
 - Other minor edits. 
+
+### V1.0.1
+- Modified the backend selection to facilitate going from Python (default) to Cython and back to Python. This modification also allows for the backend to be selected from [gmKriger](https://github.com/RPretellD/gmKriger).

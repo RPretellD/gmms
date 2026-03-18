@@ -5,11 +5,13 @@
 
 __author__ = 'A. Renmin Pretell Ductram'
 
-def select_backend(use_cython=False):
+def select_backend(backend):
 
     global _impl, __implementation__
 
-    if use_cython:
+    backend = backend.strip().lower()
+
+    if backend == 'cython':
         try:
             import gmms.distancetools_cy as _disttools
             _impl = _disttools
@@ -17,13 +19,21 @@ def select_backend(use_cython=False):
             return
         except ImportError:
             print('Cython implementation failed to load. Defaulting to Python.')
-            pass
+            backend = 'python'
 
-    import gmms.distancetools_py as _disttools
-    _impl = _disttools
-    __implementation__ = 'Python'
+    if backend == 'python':    
+        import gmms.distancetools_py as _disttools
+        _impl = _disttools
+        __implementation__ = 'Python'
+        return
 
-select_backend(use_cython=False)
+    raise ValueError('backend must be "python" or "cython"')
+
+
+select_backend(backend="Python")
+
+def get_backend():
+    return __implementation__
 
 def get_distances(*args, **kwargs):
     return _impl.get_distances(*args, **kwargs)
@@ -39,6 +49,3 @@ def get_Rrup(*args, **kwargs):
 
 def get_Rx(*args, **kwargs):
     return _impl.get_Rx(*args, **kwargs)
-
-def get_distances(*args, **kwargs):
-    return _impl.get_distances(*args, **kwargs)
