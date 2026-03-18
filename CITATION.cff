@@ -3,7 +3,7 @@ message: "If you use this software, please cite it."
 authors:
 - family-names: Pretell
   given-names: Renmin
-orcid: "https://orcid.org/0000-0001-8552-2905"
+  orcid: "https://orcid.org/0000-0001-8552-2905"
 title: "gmms: Ground motion models and supporting tools"
 version: 1.0.1
 date-released: "2026-03-18"
